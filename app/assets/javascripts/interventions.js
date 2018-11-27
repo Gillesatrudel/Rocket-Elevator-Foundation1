@@ -5,17 +5,9 @@
        dataType: 'script',
        data: {
          customers: $("#customer_select option:selected").val()
-       },
-       error: function(jqXHR, textStatus, errorThrown) {
-         return console.log("AJAX Error: " + textStatus);
-       },
-       success: function(data, textStatus, jqXHR) {
-         return console.log("Bonjour!");
-         
- 
        }
      });
-   });
+   });  
   });   
     
   $(function() {
@@ -25,14 +17,6 @@
         dataType: 'script',
         data: {
           buildings: $("#building_select option:selected").val()
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          return console.log("AJAX Error: " + textStatus);
-        },
-        success: function(data, textStatus, jqXHR) {
-          return console.log("Bonjour!");
-          
-  
         }
       });
     });
@@ -46,14 +30,6 @@
         dataType: 'script',
         data: {
           batteries: $("#battery_select option:selected").val()
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          return console.log("AJAX Error: " + textStatus);
-        },
-        success: function(data, textStatus, jqXHR) {
-          return console.log("Bonjour!");
-          
-  
         }
       });
     });
@@ -65,15 +41,7 @@
               type: 'GET',
         dataType: 'script',
         data: {
-          columns: $("#column_select option:selected").val()
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          return console.log("AJAX Error: " + textStatus);
-        },
-        success: function(data, textStatus, jqXHR) {
-          return console.log("Bonjour!");
-          
-  
+          columns: $("#column_select option:selected").val() 
         }
       });
     });

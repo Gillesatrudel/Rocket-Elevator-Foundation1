@@ -1,0 +1,11 @@
+development:
+ZENDESK_API_KEY: "rRLakl2ZezNeUuivCvSZ4fKofRM8yqcLWjC6WANr"
+
+production:
+ZENDESK_API_KEY: "rRLakl2ZezNeUuivCvSZ4fKofRM8yqcLWjC6WANr"
+
+password:
+   PWZ: "26071960"
+
+USER:
+   USE: "gillesatrudel@hotmail.com"

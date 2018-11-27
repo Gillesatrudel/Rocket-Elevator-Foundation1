@@ -1,10 +1,9 @@
-
-
+<%= form_for :interventions, url: {}, html: {method: "post"} do |f| %>
 
 <br>    <strong>Clients<strong>
 <div class="control-group">
 
-       <%= collection_select(:intervention, :customer_id, Customer.all, :id, :name, { :prompt => 'SELECT'}, { id: 'customer_select' } ) %>
+       <%= collection_select(:interventions, :customer_id, Customer.all, :id, :name, { :prompt => 'SELECT'}, { id: 'customer_select' } ) %>
 
 </div>
 
@@ -14,7 +13,7 @@
 
 <div class="control-group">
      
-        <%= collection_select(:intervention, :building_id, Building.all, :id, :name, {:prompt => 'SELECT'}, { id: 'building_select' } ) %>
+        <%= collection_select(:interventions, :building_id, Building.all, :id, :name, {:prompt => 'SELECT'}, { id: 'building_select' } ) %>
         
 </div>
 
@@ -23,7 +22,7 @@
 
 <div class="control-group">
 
-       <%= collection_select(:intervention, :battery_id, Battery.all, :id, :building_id, {:prompt => 'SELECT'}, { id: 'battery_select' } ) %>
+       <%= collection_select(:interventions, :battery_id, Battery.all, :id, :building_id, {:prompt => 'SELECT'}, { id: 'battery_select' } ) %>
 </div>
 
 <br>
@@ -32,38 +31,44 @@
 
 <div class="control-group">
 
-       <%= collection_select(:intervention, :column_id, Column.all, :id, :battery_id, {:prompt => 'NONE'}, { id: 'column_select' } ) %>
+       <%= collection_select(:interventions, :column_id, Column.all, :id, :battery_id, {:prompt => 'NONE'}, { id: 'column_select' } ) %>
 </div>
 
 <br>
 <br>
     <strong>Elevators<strong>
 
-<%= collection_select(:intervention, :elevator_id, Elevator.all, :id, :column_id, {:prompt => 'NONE'}, { id:'elevator_select' } ) %>
+<div class="control-group">   
 
-<br>
-<br>
-<br>
-<br>
-    <strong>Employees<strong>
+<%= collection_select(:interventions, :elevator_id, Elevator.all, :id, :column_id, {:prompt => 'NONE'}, { id:'elevator_select' } ) %>
 
-<%= collection_select(:employee, :employee_id, Employee.all, :id, :name, {:prompt => 'NONE'}, { :multiple => false } ) %>
+</div>
+<br>
+<br>
+<br>
+<br>
+ <div class="control-group"> 
 
+<%= collection_select(:interventions, :employee_id, Employee.all, :id, :name, {:prompt => 'NONE'}, { id:'employee_id' } ) %>
+
+</div>
 <br>
 <br>
 <br>
+
 
 <div class="col-md-8">
-    <label for="contact:message">Project Description *</label>
-    <textarea required maxlength="5000" rows="4" class="form-control" name="lead[project_description]" id="lead:message"></textarea>
+    <label for="interventions:report">Project Description *</label>
+    <textarea required maxlength="5000" rows="4" class="form-control" name="interventions[report]" id="report"></textarea>
 </div>
 <br>
 <br>
 
- 
+  <%= f.submit "SUBMIT" %>
+<% end %>  
 
-<%#= <button id="submitbutton" class="btn btn-submit btn-lg" type="submit">SUBMIT &nbsp; <i class="fa fa-angle-right"></i></button> %>
 
-<%= render 'form', intervention: @intervention %>           
+
+<%= render 'form', interventions: @interventions %>           
 
 <%= link_to 'Back', interventions_path %>

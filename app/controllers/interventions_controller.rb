@@ -1,10 +1,20 @@
+require 'zendesk_api'
 class InterventionsController < ApplicationController
   before_action :set_intervention, only: [:show, :edit, :update, :destroy]
+
 
   # GET /interventions
   # GET /interventions.json
   def index
     @interventions = Intervention.all
+    @customer = Customer.all
+    @building = Building.all
+    @batterie = Battery.all
+    @column = Column.all
+    @elevator = Elevator.all
+    @employee = Employee.all
+  
+  
   end
 
   # GET /interventions/1
@@ -12,18 +22,7 @@ class InterventionsController < ApplicationController
   def show
   end
 
-  # GET /interventions/new
-  def new_interventions
-    intervention = Intervention.new
-    intervention.customer_id = intervention_params["customer_id"]
-    intervention.building_id = intervention_params["building_id"]
-    intervention.battery_id = intervention_params["battery_id"]
-    intervention.column_id = intervention_params["column_id"]
-    intervention.elevator_id = intervention_params["elevator_id"]
-    intervention.employee_id = intervention_params["employee_id"]
-    
-
-  end
+  
 
   # GET /interventions/1/edit
   def edit
@@ -32,10 +31,9 @@ class InterventionsController < ApplicationController
   # POST /interventions
   # POST /interventions.json
   def create
-    @intervention = Intervention.new(intervention_params)
-
+    
     respond_to do |format|
-      if @intervention.save
+      if @interventions.save
         format.html { redirect_to @intervention, notice: 'Intervention was successfully created.' }
         format.json { render :show, status: :created, location: @intervention }
       else
@@ -49,7 +47,7 @@ class InterventionsController < ApplicationController
   # PATCH/PUT /interventions/1.json
   def update
     respond_to do |format|
-      if @intervention.update(intervention_params)
+      if @interventions.update(intervention_params)
         format.html { redirect_to @intervention, notice: 'Intervention was successfully updated.' }
         format.json { render :show, status: :ok, location: @intervention }
       else
@@ -62,14 +60,46 @@ class InterventionsController < ApplicationController
   # DELETE /interventions/1
   # DELETE /interventions/1.json
   def destroy
-    @intervention.destroy
+    @interventions.destroy
     respond_to do |format|
       format.html { redirect_to interventions_url, notice: 'Intervention was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
+  
+  
+   
+  def new_interventions
+        interventions = Intervention.new(interventions_params)
+        interventions.author_id = current_user.id
+        interventions.begin_date = ''
+        interventions.finish_date = ''
+        interventions.result = 'incomplete'
+        interventions.status = 'pending'
+        current_user = @employee
+        
+        if interventions.save!
+          ZendeskAPI::Ticket.create!($client, :type => "task", :priority => "normal",
+            :subject => "#{interventions.employee_id} from #{interventions.employee_id}",
+            :comment => { :value => "#{interventions.customer_id} for building #{interventions.building_id} in battery #{interventions.battery_id} and column #{interventions.column_id} and elevator #{interventions.elevator_id}\n with technician #{interventions.employee_id} report #{interventions.report} by #{interventions.author_id}"}, 
+            :submitter_id => current_user,
+          )
+          redirect_to root_path
+           
 
- 
+        else
+          interventions.errors
+        end
+        
+
+  end
+
+  def interventions_params
+        params.require(:interventions).permit(:customer_id, :building_id, :battery_id, :column_id, :elevator_id, :employee_id, :report, :author_id )
+        
+  end
+
+
   def update_buildings
     @buildings = Building.where("customer_id = ?", params[:customers])
     puts  @buildings.size
@@ -108,18 +138,13 @@ class InterventionsController < ApplicationController
     pp 'Allo building'
   end
 
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_intervention
       @intervention = Intervention.find(params[:id])
     end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def intervention_params
-      #params.fetch(:intervention, {})
-      params.require(:customer).permit(:business_name, :user_id)
-    end
+    
+    include ZendeskAPI 
 
 end
 
