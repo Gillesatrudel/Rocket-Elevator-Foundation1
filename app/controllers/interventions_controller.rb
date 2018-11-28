@@ -81,7 +81,7 @@ class InterventionsController < ApplicationController
         if interventions.save!
           ZendeskAPI::Ticket.create!($client, :type => "task", :priority => "normal",
             :subject => "#{interventions.employee_id} from #{interventions.employee_id}",
-            :comment => { :value => "#{interventions.customer.business_name} customer of building #{interventions.building.building_name} in battery #{interventions.battery_id} and column #{interventions.column_id || "/none" } and elevator #{interventions.elevator_id}\n with technician #{interventions.employee.name} report #{interventions.report} by author #{interventions.author_id}"}, 
+            :comment => { :value => "#{interventions.customer.business_name} customer of building #{interventions.building.building_name} in battery #{interventions.battery_id} and column #{interventions.column_id || "/none"} and elevator #{interventions.elevator_id}\n with technician #{interventions.employee.name} report #{interventions.report} by author #{interventions.author_id}"}, 
             :submitter_id => current_user,
           )
           redirect_to root_path
