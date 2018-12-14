@@ -44,9 +44,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  require 'syslogger'
-  config.logger = Syslogger.new("rails-application",Syslog::LOG_PID, Syslog::LOG_LOCAL7)
-  config.lograge.enabled = true
-  config.lograge.formatter = Lograge::Formatters::Json.new
+ 
 
 end
